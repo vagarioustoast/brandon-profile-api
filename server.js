@@ -94,7 +94,7 @@ app.get("/api/pets", (req, res) => {
 
 // Hobbies
 app.get("/api/hobbies", (req, res) => {
-  res.send("these are my hobbies.");
+  res.send("These are my hobbies.");
 });
 /**********
  * SERVER *
