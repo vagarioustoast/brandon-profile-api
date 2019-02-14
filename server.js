@@ -53,7 +53,7 @@ app.get("/api", (req, res) => {
     message: "Welcome to my personal api! Here's what you need to know!",
     documentationUrl:
       "https://github.com/vagarioustoast/express-personal-api/README.md",
-    baseUrl: "http://morning-chamber-50934.herokuapp.com",
+    baseUrl: "http://boiling-coast-49314.herokuapp.com",
     endpoints: [
       {
         method: "GET",
@@ -68,19 +68,30 @@ app.get("/api", (req, res) => {
       },
       {
         method: "POST",
-        path: "/api/hobbies",
-        description: "Creates a new hobby."
+        path: "/api/books",
+        description: "Creates books."
+      },
+      {
+        method: "POST",
+        path: "/api/shows",
+        description: "Creates shows."
       }
     ]
   });
 });
 // Profile
 app.get("/api/profile", (req, res) => {
+  // My Profile
   let profile = {
     name: "Brandon",
     githubUsername: "vagarioustoast",
     githubLink: "https://github.com/vagarioustoast",
-    githubProfileImage: ""
+    githubProfileImage:
+      "https://avatars2.githubusercontent.com/u/30280640?s=400&v=4",
+    personalSiteLink:
+      "https://github.com/vagarioustoast/vagarioustoast.github.io",
+    currentCity: "Oakland, CA",
+    pets: ["Pansy", "Deadpool"]
   };
   // Send this profile
   res.send(JSON.stringify(profile));
@@ -90,9 +101,14 @@ app.get("/api/projects", (req, res) => {
   res.send("These are my projects.");
 });
 
-// Hobbies
-app.get("/api/hobbies", (req, res) => {
-  res.send("These are my hobbies.");
+// Books
+app.get("/api/books", (req, res) => {
+  res.send("These are my favorite shows.");
+});
+
+// Shows
+app.get("/api/shows", (req, res) => {
+  res.send("These are my favorite shows.");
 });
 /**********
  * SERVER *
