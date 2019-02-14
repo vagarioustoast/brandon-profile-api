@@ -67,11 +67,6 @@ app.get("/api", (req, res) => {
         description: "View some of the projects I've worked on."
       },
       {
-        method: "GET",
-        path: "/api/pets",
-        description: "A page to view my dog."
-      },
-      {
         method: "POST",
         path: "/api/hobbies",
         description: "Creates a new hobby."
@@ -81,15 +76,18 @@ app.get("/api", (req, res) => {
 });
 // Profile
 app.get("/api/profile", (req, res) => {
-  res.send("This is my profile.");
+  let profile = {
+    name: "Brandon",
+    githubUsername: "vagarioustoast",
+    githubLink: "https://github.com/vagarioustoast",
+    githubProfileImage: ""
+  };
+  // Send this profile
+  res.send(JSON.stringify(profile));
 });
 // Projects
 app.get("/api/projects", (req, res) => {
   res.send("These are my projects.");
-});
-// Pets
-app.get("/api/pets", (req, res) => {
-  res.send("This is the pet route.");
 });
 
 // Hobbies
