@@ -1,7 +1,8 @@
 console.log("Sanity Check: JS is working!");
 
-$(document).ready(function(){
-
-// your code
-
+$(document).ready(function() {
+  // $.ajax({
+  //     url:
+  // })
+  // your code
 });
