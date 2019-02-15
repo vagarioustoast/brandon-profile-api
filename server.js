@@ -94,7 +94,8 @@ app.get("/api/profile", (req, res) => {
     currentCity: "Oakland, CA",
     pets: [
       { name: "Pansy", species: "Dog", age: 4 },
-      { name: "Deadpool", species: "Fish", age: 1 }
+      { name: "Deadpool", species: "Fish", age: 1 },
+      { name: "Ben", species: "Dog", age: 2 }
     ]
   };
   // Send this profile
@@ -115,10 +116,33 @@ app.get("/api/projects", (req, res) => {
 
 // Books
 app.get("/api/books", (req, res) => {
-  res.send("Books I recommend.");
+  // Gets all books
+  db.Book.find({}, (err, foundBooks) => {
+    if (err) return console.error(err);
+    // returns as JSON
+    res.json(foundBooks);
+  });
 });
 
-// Shows //
+app.get("/api/books/:id", (req, res) => {
+  db.Book.findOne({ _id: req.params.id }, (err, foundBook) => {
+    if (err) return console.error(err);
+    res.json(foundBook);
+  });
+});
+
+app.put("/api/books/:id", (req, res) => {
+  const bookId = req.params.id;
+  db.Book.findOneAndUpdate({ _id: bookId }, req.body, { new: true })
+    .populate("book")
+    .exec((err, updatedBook) => {
+      if (err) return console.error(err);
+
+      res.json(updatedBook);
+    });
+});
+
+// SHOWS //
 app.get("/api/shows", (req, res) => {
   // get all shows
   db.Show.find({}, (err, foundShows) => {
