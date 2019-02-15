@@ -50,7 +50,6 @@ app.get("/api", (req, res) => {
   // It would be seriously overkill to save any of this to your database.
   // But you should change almost every line of this response.
   res.json({
-    woopsIForgotToDocumentAllMyEndpoints: true, // CHANGE ME ;)
     message: "Welcome to my personal api! Here's what you need to know!",
     documentationUrl:
       "https://github.com/vagarioustoast/express-personal-api/README.md",
@@ -68,13 +67,23 @@ app.get("/api", (req, res) => {
         description: "View some of the projects I've worked on."
       },
       {
-        method: "POST",
+        method: "GET",
         path: "/api/books",
+        description: "Find the shows I love!"
+      },
+      {
+        method: "GET",
+        path: "/api/shows",
+        description: "Find some shows I adore."
+      },
+      {
+        method: "POST",
+        path: "/api/books/:id",
         description: "Creates books."
       },
       {
         method: "POST",
-        path: "/api/shows",
+        path: "/api/shows/:id",
         description: "Creates shows."
       }
     ]
@@ -107,7 +116,7 @@ app.get("/api/projects", (req, res) => {
   let projects = [
     {
       name: "Wonder Comic App",
-      techUsed: ["HTML", "CSS", "JavaScript", "AJAX", "Firebase"],
+      techUsed: ["HTML", "CSS", "JavaScript", "Firebase"],
       link: "https://wonderizecomic.firebaseapp.com/"
     }
   ];
@@ -161,12 +170,36 @@ app.get("/api/shows/:id", (req, res) => {
   });
 });
 
+app.post("/api/shows", (req, res) => {
+  const newShow = new db.Show({
+    title: req.body.title,
+    seasons: req.body.seasons
+  });
+  newShow.save((err, savedShow) => {
+    if (err) return console.error(err);
+    console.log(`Saved: ${savedShow.title}`);
+    res.json(savedShow);
+  });
+});
+
 app.put("/api/shows/:id", (req, res) => {
   db.Show.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
     .populate("show")
     .exec((err, updatedShow) => {
       if (err) return console.error(err);
       res.json(updatedShow);
+    });
+});
+
+app.delete("/api/shows/:id", (req, res) => {
+  console.log(`Deleted show: ${req.params}`);
+  let showId = req.params.id;
+
+  db.Show.findOneAndDelete({ _id: showId })
+    .populate("show")
+    .exec((err, deletedShow) => {
+      if (err) return console.error(deletedShow);
+      res.json(deletedShow);
     });
 });
 
