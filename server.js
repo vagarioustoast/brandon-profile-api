@@ -1,6 +1,7 @@
 // require express and other modules
 const express = require("express");
 const app = express();
+const db = require("./models");
 
 // parse incoming urlencoded form data
 // and populate the req.body object
@@ -91,25 +92,60 @@ app.get("/api/profile", (req, res) => {
     personalSiteLink:
       "https://github.com/vagarioustoast/vagarioustoast.github.io",
     currentCity: "Oakland, CA",
-    pets: ["Pansy", "Deadpool"]
+    pets: [
+      { name: "Pansy", species: "Dog", age: 4 },
+      { name: "Deadpool", species: "Fish", age: 1 }
+    ]
   };
   // Send this profile
   res.send(JSON.stringify(profile));
 });
+
 // Projects
 app.get("/api/projects", (req, res) => {
-  res.send("These are my projects.");
+  let projects = [
+    {
+      name: "Wonder Comic App",
+      techUsed: ["HTML", "CSS", "JavaScript", "AJAX", "Firebase"],
+      link: "https://wonderizecomic.firebaseapp.com/"
+    }
+  ];
+  res.send(JSON.stringify(projects));
 });
 
 // Books
 app.get("/api/books", (req, res) => {
-  res.send("These are my favorite shows.");
+  res.send("Books I recommend.");
 });
 
-// Shows
+// Shows //
 app.get("/api/shows", (req, res) => {
-  res.send("These are my favorite shows.");
+  // get all shows
+  db.Show.find({}, (err, foundShows) => {
+    // if something goes wrong...
+    if (err) return console.error(err);
+
+    // return as json
+    res.json(foundShows);
+  });
 });
+
+app.get("/api/shows/:id", (req, res) => {
+  db.Show.findOne({ _id: req.params.id }, (err, foundShow) => {
+    if (err) return console.error(err);
+    res.json(foundShow);
+  });
+});
+
+app.put("/api/shows/:id", (req, res) => {
+  db.Show.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+    .populate("show")
+    .exec((err, updatedShow) => {
+      if (err) return console.error(err);
+      res.json(updatedShow);
+    });
+});
+
 /**********
  * SERVER *
  **********/

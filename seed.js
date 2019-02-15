@@ -13,3 +13,31 @@
 //   console.log("Created new campsite", campsite._id)
 //   process.exit(); // we're all done! Exit the program.
 // })
+const db = require("./models");
+
+let measureForMeasureBook = {
+  title: "Measure for Measure",
+  author: "William Shakespeare"
+};
+
+let showList = [
+  {
+    title: "The Sopranos",
+    seasons: 6
+  },
+  {
+    title: "Hell on Wheels",
+    seasons: 5
+  }
+];
+
+db.Show.create(showList, (err, newShow) => {
+  if (err) return console.error(err);
+  console.log(newShow);
+});
+
+// db.Book.create(measureForMeasureBook, (err, newBook) => {
+//   if (err) return console.error(err);
+
+//   console.log(newBook);
+// });
